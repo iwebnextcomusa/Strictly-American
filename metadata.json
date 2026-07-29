@@ -1,0 +1,6 @@
+{
+  "name": "Strictly American",
+  "description": "100% Made in the USA luxury apparel brand celebrating craftsmanship, heritage, and quality.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
