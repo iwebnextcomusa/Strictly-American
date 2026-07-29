@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { PageTab, Product } from '../types';
 
+const brandLogo = "https://qeya9bjadi260nlt.public.blob.vercel-storage.com/Create_logo_for_Strictly_American_202607300052.jpeg";
+
 interface HeaderProps {
   currentTab?: PageTab;
   activeTab?: PageTab;
@@ -133,20 +135,13 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => { setCurrentTab('home'); setMobileMenuOpen(false); }}
               className="group text-left flex items-center gap-3"
             >
-              {/* Custom Patriotic Crest Icon */}
-              <div className="w-10 h-10 rounded-lg bg-[#0A2342] p-0.5 shadow-sm group-hover:bg-[#B22234] transition-colors">
-                <div className="w-full h-full bg-[#0A2342] rounded-[7px] flex items-center justify-center border border-white/20">
-                  <span className="font-serif-display text-lg font-bold text-white tracking-tighter italic">SA</span>
-                </div>
-              </div>
-              <div>
-                <span className="font-serif-display text-xl sm:text-2xl font-bold tracking-tight text-[#0A2342] group-hover:text-[#B22234] transition-colors block uppercase italic">
-                  STRICTLY AMERICAN
-                </span>
-                <span className="text-[9px] tracking-[0.3em] text-[#B22234] uppercase font-bold block -mt-1">
-                  100% Made in the USA
-                </span>
-              </div>
+              {/* Custom Patriotic Crest Emblem Logo */}
+              <img
+                src={brandLogo}
+                alt="Strictly American 100% Made in USA Logo"
+                className="w-12 h-12 object-contain rounded-full shadow border border-[#0A2342]/20 group-hover:scale-105 transition-transform bg-white p-0.5"
+                referrerPolicy="no-referrer"
+              />
             </button>
           </div>
 
@@ -297,19 +292,7 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </div>
 
-            {/* Compare Button */}
-            <button
-              onClick={onOpenCompare}
-              title="Compare Products"
-              className="relative p-2 text-[#0A2342] hover:text-[#B22234] transition-colors"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              {compareCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0A2342] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {compareCount}
-                </span>
-              )}
-            </button>
+
 
             {/* Wishlist Button */}
             <button

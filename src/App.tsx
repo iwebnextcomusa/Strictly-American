@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageTab, Product, CartItem } from './types';
 import { INITIAL_PRODUCTS } from './data/products';
 
@@ -6,6 +6,7 @@ import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { FeaturedCategories } from './components/FeaturedCategories';
 import { ProductCard } from './components/ProductCard';
+import { ProductGridSkeleton } from './components/ProductSkeleton';
 import { ThreeDSection } from './components/ThreeDSection';
 import { WhyBuyAmerican } from './components/WhyBuyAmerican';
 import { LifestyleSection } from './components/LifestyleSection';
@@ -48,6 +49,15 @@ export const App: React.FC = () => {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('All');
   const [selectedGenderFilter, setSelectedGenderFilter] = useState('All');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  // Initial load skeleton simulation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Navigation Helper
   const handleNavigate = (tab: PageTab, categoryFilter = 'All', genderFilter = 'All') => {
@@ -184,21 +194,25 @@ export const App: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {bestSellers.map((prod) => (
-                    <ProductCard
-                      key={prod.id}
-                      product={prod}
-                      onQuickView={(p) => setQuickViewProduct(p)}
-                      onAddToCart={(p) => handleAddToCart(p)}
-                      onToggleWishlist={handleToggleWishlist}
-                      isWishlisted={wishlistIds.includes(prod.id)}
-                      onToggleCompare={handleToggleCompare}
-                      isCompared={comparedProducts.some(p => p.id === prod.id)}
-                      onSelectProduct={handleSelectProduct}
-                    />
-                  ))}
-                </div>
+                {isInitialLoading ? (
+                  <ProductGridSkeleton count={4} gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" />
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {bestSellers.map((prod) => (
+                      <ProductCard
+                        key={prod.id}
+                        product={prod}
+                        onQuickView={(p) => setQuickViewProduct(p)}
+                        onAddToCart={(p) => handleAddToCart(p)}
+                        onToggleWishlist={handleToggleWishlist}
+                        isWishlisted={wishlistIds.includes(prod.id)}
+                        onToggleCompare={handleToggleCompare}
+                        isCompared={comparedProducts.some(p => p.id === prod.id)}
+                        onSelectProduct={handleSelectProduct}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 

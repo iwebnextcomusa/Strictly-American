@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { SlidersHorizontal, Search, X, Grid, List, Star, Filter } from 'lucide-react';
 import { Product, FilterState } from '../types';
 import { ProductCard } from './ProductCard';
+import { ProductGridSkeleton } from './ProductSkeleton';
 
 interface ShopPageProps {
   products: Product[];
@@ -42,6 +43,16 @@ export const ShopPage: React.FC<ShopPageProps> = ({
   });
 
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Perceived performance skeleton simulation on mount & filter changes
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+    return () => clearTimeout(timer);
+  }, [filters.category, filters.gender, filters.searchQuery, filters.usaState, filters.sortBy]);
 
   const categories = ['All', 'Men', 'Women', 'Hats', 'Hoodies', 'T-Shirts', 'Jackets', 'Accessories'];
   const genders = ['All', 'Men', 'Women', 'Unisex'];
@@ -257,7 +268,9 @@ export const ShopPage: React.FC<ShopPageProps> = ({
 
           {/* Product Grid */}
           <div className="lg:col-span-3">
-            {filteredProducts.length === 0 ? (
+            {isLoading ? (
+              <ProductGridSkeleton count={6} gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" />
+            ) : filteredProducts.length === 0 ? (
               <div className="bg-white border border-[#0A2342]/10 rounded-2xl p-12 text-center space-y-4 shadow-sm">
                 <p className="text-[#0A2342]/70 text-sm font-serif italic">No products matched your specified filter criteria.</p>
                 <button
@@ -273,7 +286,7 @@ export const ShopPage: React.FC<ShopPageProps> = ({
                     sortBy: 'featured',
                     usaState: 'All'
                   })}
-                  className="px-6 py-2.5 bg-[#0A2342] text-white hover:bg-[#B22234] transition-colors font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm"
+                  className="px-6 py-2.5 bg-[#0A2342] text-white hover:bg-[#B22234] transition-colors font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm cursor-pointer"
                 >
                   Clear Filters
                 </button>

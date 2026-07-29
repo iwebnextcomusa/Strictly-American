@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Flag, Send, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { PageTab } from '../types';
 
+const brandLogo = "https://qeya9bjadi260nlt.public.blob.vercel-storage.com/Create_logo_for_Strictly_American_202607300052.jpeg";
+
 interface FooterProps {
   onNavigate: (tab: PageTab) => void;
 }
@@ -65,9 +67,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Brand Info */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded bg-[#B22234] border border-white/20 flex items-center justify-center font-serif-display text-lg font-bold text-white italic">
-              SA
-            </div>
+            <img
+              src={brandLogo}
+              alt="Strictly American Logo"
+              className="w-10 h-10 object-contain rounded-full border border-white/20 bg-white p-0.5 shadow"
+              referrerPolicy="no-referrer"
+            />
             <div>
               <span className="font-serif-display text-xl font-bold text-white block uppercase italic">
                 STRICTLY AMERICAN
