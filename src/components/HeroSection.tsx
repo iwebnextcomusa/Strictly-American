@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowRight, ShieldCheck, Flag, Sparkles } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { ArrowRight, Flag, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import { PageTab } from '../types';
 
 interface HeroSectionProps {
@@ -7,19 +7,52 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#E5E2DD] text-[#0A2342]">
       
-      {/* Background Editorial Image & Subtle Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=2000&q=80"
-          alt="Proudly Made in America Lifestyle Apparel"
-          className="w-full h-full object-cover object-center opacity-25 scale-105"
-          referrerPolicy="no-referrer"
+      {/* Background Editorial Video & Subtle Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          src="https://qeya9bjadi260nlt.public.blob.vercel-storage.com/Ad_video_for_American_apparel_202607300021.mp4"
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          className="w-full h-full object-cover object-center opacity-70 scale-105 pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FDFCFB]/90 via-[#F3F1EF]/70 to-[#FDFCFB]/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FDFCFB]/55 via-[#F3F1EF]/30 to-[#FDFCFB]/55 pointer-events-none"></div>
       </div>
+
+      {/* Mute/Unmute Audio Toggle Button */}
+      <button
+        onClick={toggleMute}
+        aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+        title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+        className="absolute bottom-6 right-6 z-20 p-2.5 sm:px-4 sm:py-2.5 rounded-full bg-[#0A2342]/85 hover:bg-[#B22234] text-white backdrop-blur-md border border-white/20 transition-all shadow-lg flex items-center gap-2 group cursor-pointer"
+      >
+        {isMuted ? (
+          <>
+            <VolumeX className="w-4 h-4 text-amber-300" />
+            <span className="text-[10px] uppercase tracking-wider font-bold hidden sm:inline">Unmute Sound</span>
+          </>
+        ) : (
+          <>
+            <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <span className="text-[10px] uppercase tracking-wider font-bold hidden sm:inline">Mute Sound</span>
+          </>
+        )}
+      </button>
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-8">
